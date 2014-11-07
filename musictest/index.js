@@ -1,2 +1,2 @@
 var api = require('./node_modules/musicapi');
-api.id('album', 32311);
+api.id('album', 2561150);
