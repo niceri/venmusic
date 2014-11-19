@@ -58,7 +58,7 @@ var api = function (c, callback) {
 //module exports extend
 v.extend(exports, {
 	search: function (key, callback,args) {
-		if (!key || !callback) return false;
+		if (!key || !v.isFunction(callback)) return false;
 		args = args ?
 			v.extend(args, {s: key}) :
 			{s: key, limit: 3};
@@ -69,15 +69,11 @@ v.extend(exports, {
 		}, callback);
 	},
 	id: function (key, resType, callback, args) {
-		if (!key || !callback) return false;
-		if (resType === 'song') 
-			args = args ? 
-				v.extend(args, {ids: key }) :
-				{ids: key };
-		if (resType === 'mv' || resType === 'lyc')
-			args = args ? 
-				v.extend(args, {id: key}) :
-				{id: key};
+		if (!key || !v.isFunction(callback)) return false;
+		if (resType === 'song' || resType === 'mv' || resType === 'lyc') {
+			var idObj = resType === 'song' ? {ids: key } : {id: key};
+			args = args ? v.extend(args, idObj) : idObj;
+		}
 		return api({
 			resType: resType,
 			key: key,
